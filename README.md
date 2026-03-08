@@ -1,14 +1,53 @@
-# astrbot-plugin-helloworld
+# AstrBot 砖头插件 (Brick Plugin)
 
-AstrBot 插件模板 / A template plugin for AstrBot plugin feature
+这是一个从 Koishi 迁移并增强的 AstrBot 插件。主要功能是烧制砖头并“拍晕”（禁言）群友，同时增加了偷砖、搬砖、签到和黑名单等有趣的功能。
 
-> [!NOTE]
-> This repo is just a template of [AstrBot](https://github.com/AstrBotDevs/AstrBot) Plugin.
-> 
-> [AstrBot](https://github.com/AstrBotDevs/AstrBot) is an agentic assistant for both personal and group conversations. It can be deployed across dozens of mainstream instant messaging platforms, including QQ, Telegram, Feishu, DingTalk, Slack, LINE, Discord, Matrix, etc. In addition, it provides a reliable and extensible conversational AI infrastructure for individuals, developers, and teams. Whether you need a personal AI companion, an intelligent customer support agent, an automation assistant, or an enterprise knowledge base, AstrBot enables you to quickly build AI applications directly within your existing messaging workflows.
+## 📥 安装
 
-# Supports
+1. 将插件文件夹放入 AstrBot 的 `plugins` 目录下。
+2. 重启 AstrBot。
 
-- [AstrBot Repo](https://github.com/AstrBotDevs/AstrBot)
-- [AstrBot Plugin Development Docs (Chinese)](https://docs.astrbot.app/dev/star/plugin-new.html)
-- [AstrBot Plugin Development Docs (English)](https://docs.astrbot.app/en/dev/star/plugin-new.html)
+## 🛠 配置说明
+
+你可以在 AstrBot 管理面板中配置以下参数：
+
+- **砖块最多持有量**: 用户在这个群能拥有的最大砖头数。
+- **烧砖成本**: 烧制一块砖头需要群友发送的消息总数。
+- **拍砖冷却时间**: 两次拍人指令之间的间隔。
+- **禁言时间区间**: 拍人成功或反杀时的禁言时长。
+- **偷砖功能**:
+  - 开启/关闭偷砖。
+  - 偷砖失败概率、偷砖数量区间、冷却时间及失败禁言时间。
+- **搬砖功能**:
+  - 开启/关闭搬砖。
+  - 搬砖失败（累晕）概率、所需消息条数及获得砖头区间。
+- **签到功能**:
+  - 开启/关闭每日签到。
+  - 新用户首次使用获得的额外奖励。
+- **黑名单功能**:
+  - 用户黑名单：支持用户自助拉黑。
+  - 群黑名单：管理员可禁用本群砖头功能。
+
+## 🎮 指令帮助
+
+| 指令 | 别名 | 说明 |
+| --- | --- | --- |
+| `砖头帮助` | - | 显示本帮助信息 |
+| `查看砖头` | `砖头.查看` | 查看你当前持有的砖头数量 |
+| `烧砖` | `砖头.烧砖` | 开始烧砖，群友发言后自动完成 |
+| `拍人 @用户` | `砖头.拍人` | 使用一块砖头拍晕对方，有概率被反杀 |
+| `偷砖 @用户` | `砖头.偷砖` | 尝试偷取对方的砖头，失败将被禁言 |
+| `搬砖` | `砖头.搬砖` | 开始搬砖，完成后获得随机砖头 |
+| `砖头签到` | `砖头.签到` | 每日领取随机数量的砖头 |
+| `别拍我了` | - | 将自己拉入黑名单（需输入两次确认，不可逆） |
+
+### 管理员指令
+
+- `禁砖头`: (仅群主/管理) 将当前群加入黑名单。
+- `开启砖头`: (仅群主/管理) 将当前群移出黑名单。
+- `修改配置 [项] [值]`: 动态修改插件配置。
+
+## 📝 开发者备注
+
+本插件数据存储在 `data/plugin_data/brick_plugin/brick_data.json` 中。
+禁言功能目前主要适配 `aiocqhttp` (OneBot V11) 协议。
